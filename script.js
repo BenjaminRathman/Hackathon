@@ -405,10 +405,10 @@ class DrawingWhiteboard {
         // If the server told us there was an issue, surface it
         if (!response.ok || data.error) {
             console.error("Server / OpenAI error:", data);
-        
+    
             // Try to surface a human-readable message
             let msg = "AI request failed";
-        
+    
             if (typeof data.error === 'string') {
                 msg = data.error;
             } else if (data.error && data.error.message) {
@@ -418,19 +418,30 @@ class DrawingWhiteboard {
             } else {
                 msg = JSON.stringify(data);
             }
-        
+    
             throw new Error(msg);
         }
-        
     
-        // data.content should be a string that (we asked) should be valid JSON
-        // Try to parse it as JSON like { summary: "...", links: [...] }
+        // data.content should be the model's reply (a string)
+        const text = data.content || "";
+    
+        // 1. Try to parse it exactly as JSON first
         try {
-            return JSON.parse(data.content);
-        } catch (err) {
-            // If the model didn't answer in perfect JSON, recover gracefully
+            return JSON.parse(text);
+        } catch (_) {
+            // 2. If that fails, try to extract JSON out of a ```json ... ``` block
+            const fencedMatch = text.match(/```json\s*([\s\S]*?)```/i);
+            if (fencedMatch && fencedMatch[1]) {
+                try {
+                    return JSON.parse(fencedMatch[1]);
+                } catch (_) {
+                    // fall through
+                }
+            }
+    
+            // 3. Last resort: return as a summary string with no links
             return {
-                summary: data.content,
+                summary: text,
                 links: []
             };
         }
