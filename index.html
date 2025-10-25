@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing Whiteboard with AI Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="tool-group">
+                <button id="pen-tool" class="tool-btn active" title="Pen Tool">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+                        <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+                        <path d="M2 2l7.586 7.586"/>
+                        <circle cx="11" cy="11" r="2"/>
+                    </svg>
+                </button>
+                <button id="eraser-tool" class="tool-btn" title="Eraser Tool">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 21l4-4m0 0l4-4m-4 4L7 13m4 4l4-4"/>
+                        <path d="M3 3l18 18"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="tool-group">
+                <label for="stroke-width">Stroke:</label>
+                <input type="range" id="stroke-width" min="1" max="20" value="3">
+                <span id="stroke-value">3px</span>
+            </div>
+            
+            <div class="tool-group">
+                <label for="color-picker">Color:</label>
+                <input type="color" id="color-picker" value="#000000">
+            </div>
+            
+            <div class="tool-group">
+                <button id="undo-btn" class="tool-btn" title="Undo">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 7v6h6"/>
+                        <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/>
+                    </svg>
+                </button>
+                <button id="redo-btn" class="tool-btn" title="Redo">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 7v6h-6"/>
+                        <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3L21 13"/>
+                    </svg>
+                </button>
+                <button id="clear-btn" class="tool-btn" title="Clear Canvas">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 6h18"/>
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="tool-group">
+                <button id="ai-analyze-btn" class="ai-btn" title="AI Analyze Selection">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+                        <path d="M20.2 20.2L16 16m-8 0l-4.2 4.2M20.2 3.8L16 8m-8 0L3.8 3.8"/>
+                    </svg>
+                    AI Analyze
+                </button>
+            </div>
+        </div>
+        
+        <!-- Canvas Container -->
+        <div class="canvas-container">
+            <canvas id="drawing-canvas"></canvas>
+            
+            <!-- Selection overlay -->
+            <div id="selection-overlay" class="selection-overlay hidden">
+                <div id="selection-box" class="selection-box"></div>
+            </div>
+        </div>
+        
+        <!-- Loading indicator -->
+        <div id="loading-indicator" class="loading-indicator hidden">
+            <div class="spinner"></div>
+            <p>Analyzing with AI...</p>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
